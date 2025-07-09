@@ -7,5 +7,8 @@ import { Component } from '@angular/core';
   styleUrl: './login.css'
 })
 export class Login {
-
+  conta = 5;
+  incrementa() {
+    this.conta++;
+  }
 }
