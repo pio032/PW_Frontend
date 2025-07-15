@@ -1,1 +1,89 @@
-<p>outsider works!</p>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrazione Outsider - Accesso Aziendale</title>
+    <link rel="stylesheet" href="outsider.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 Registrazione Outsider</h1>
+            <p>Compila i dati per l'accesso in azienda</p>
+        </div>
+        <form id="outsiderForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="nome">Nome <span class="required">*</span></label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="cognome">Cognome <span class="required">*</span></label>
+                    <input type="text" id="cognome" name="cognome" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="codiceFiscale">Codice Fiscale <span class="required">*</span></label>
+                <input type="text" id="codiceFiscale" name="codiceFiscale" required maxlength="16" style="text-transform: uppercase;">
+            </div>
+            <div class="form-group">
+                <label for="ragioneSociale">Ragione Sociale <span class="required">*</span></label>
+                <input type="text" id="ragioneSociale" name="ragioneSociale" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email">
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Telefono</label>
+                    <input type="tel" id="telefono" name="telefono">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="dataArrivo">Data di Arrivo <span class="required">*</span></label>
+                <input type="date" id="dataArrivo" name="dataArrivo" required>
+            </div>
+            <div class="form-group">
+                <label for="foto">Foto/Selfie <span class="required">*</span></label>
+                <div class="photo-section">
+                    <div class="photo-buttons">
+                        <button type="button" class="photo-btn camera-btn" onclick="openCamera()">
+                            📸 Scatta Foto
+                        </button>
+                        <button type="button" class="photo-btn upload-btn" onclick="document.getElementById('foto').click()">
+                            📁 Carica Foto
+                        </button>
+                    </div>
+                    <input type="file" id="foto" name="foto" accept="image/*" style="display: none;" required>
+                    <div id="cameraContainer" class="camera-container" style="display: none;">
+                        <video id="camera"></video>
+                        <div class="camera-overlay">
+                            <div class="face-guide"></div>
+                        </div>
+                    </div>
+                    <canvas id="canvas" style="display: none;"></canvas>
+                    <img id="photoPreview" class="photo-preview" alt="Anteprima foto">
+                    <div id="cameraControls" style="display: none; margin-top: 15px;">
+                        <button type="button" class="photo-btn capture-btn" onclick="capturePhoto()">
+                            ✨ Cattura
+                        </button>
+                        <button type="button" class="photo-btn cancel-btn" onclick="closeCamera()">
+                            ❌ Annulla
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="submit-btn">
+                ✅ Registra Outsider
+            </button>
+            <div id="successMessage" class="success-message">
+                🎉 Registrazione completata con successo! Benvenuto in azienda.
+            </div>
+        </form>
+        <a href="/" id="homeBtn" title="Torna alla Home">🏠 Home</a>
+        <div id="okMessage" class="ok-message">OK</div>
+    </div>
+</body>
+</html>
