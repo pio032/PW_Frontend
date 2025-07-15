@@ -11,5 +11,5 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'supliers', component: Suppliers },
   { path: 'receptionist', component: Receptionist },
-  { path: '', redirectTo: '/outsider', pathMatch: 'full' }
+  { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
