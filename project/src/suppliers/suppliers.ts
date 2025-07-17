@@ -1,11 +1,21 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-suppliers',
-  imports: [],
+  selector: 'app-main-page',
   templateUrl: './suppliers.html',
-  styleUrl: './suppliers.css'
+  styleUrls: ['./suppliers.css']
 })
 export class Suppliers {
 
+  constructor(private router: Router) { }
+
+  navigateToListaPrenotazioni(): void {
+    this.router.navigate(['/listaPrenotazioni']);
+  }
+
+  navigateToRichiestaPrenotazioni(): void {
+    this.router.navigate(['/richiestaPrenotazioni']);
+  }
 }
+
