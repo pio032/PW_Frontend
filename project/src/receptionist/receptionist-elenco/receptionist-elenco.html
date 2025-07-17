@@ -1,0 +1,66 @@
+<div class="elenco-container">
+  <div class="elenco-header">
+    <h2>Prenotazioni di oggi</h2>
+    <p>{{ currentDate | date:'fullDate':'':'it' }}</p>
+    
+    <div class="action-buttons">
+      <button class="action-btn refresh-btn" (click)="refreshElenco()">
+        🔄 Aggiorna
+      </button>
+      <!-- TODO: Aggiungere routing per la home -->
+      <button class="action-btn home-btn" (click)="goToHome()">
+        🏠 Home
+      </button>
+    </div>
+  </div>
+
+  <div class="appointments-list" *ngIf="todayAppointments.length > 0">
+    <div 
+      class="appointment-card"
+      *ngFor="let appointment of todayAppointments"
+      [class.rifiutata]="appointment.status === 'rifiutata'"
+      [class.confermata]="appointment.status === 'confermata'"
+      [class.in-attesa]="appointment.status === 'in_attesa'">
+      
+      <div class="appointment-photo">
+        <div class="photo-placeholder">
+          <span class="photo-icon">👤</span>
+        </div>
+      </div>
+      
+      <div class="appointment-info">
+        <div class="appointment-time">
+          <span class="time-label">Orario:</span>
+          <span class="time-value">{{ appointment.time }}</span>
+        </div>
+        
+        <div class="appointment-name">
+          <span class="name-label">Nome:</span>
+          <span class="name-value">{{ appointment.personName }}</span>
+        </div>
+        
+        <div class="appointment-company">
+          <span class="company-label">Ragione Sociale:</span>
+          <span class="company-value">{{ appointment.company }}</span>
+        </div>
+        
+        <div class="appointment-reference">
+          <span class="reference-label">Interno:</span>
+          <span class="reference-value">{{ appointment.internalReference }}</span>
+        </div>
+      </div>
+      
+      <div class="appointment-status">
+        <span class="status-badge" [class]="appointment.status">
+          {{ getStatusText(appointment.status) }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-appointments" *ngIf="todayAppointments.length === 0">
+    <div class="no-appointments-icon">📅</div>
+    <h3>Nessuna prenotazione per oggi</h3>
+    <p>Non ci sono prenotazioni programmate per la giornata odierna.</p>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<div class="calendar-container">
+  <div class="calendar-header">
+    <div class="calendar-title">
+      <h2>{{ currentMonth }} {{ currentYear }}</h2>
+    </div>
+    
+    <div class="calendar-controls">
+      <button class="control-btn" (click)="previousMonth()">
+        <span>←</span>
+      </button>
+      
+      <button class="control-btn today-btn" (click)="goToToday()">
+        Today
+      </button>
+      
+      <button class="control-btn" (click)="nextMonth()">
+        <span>→</span>
+      </button>
+    </div>
+    
+    <div class="action-buttons">
+      <button class="action-btn refresh-btn" (click)="refreshCalendar()">
+        🔄 Aggiorna
+      </button>
+      <!-- TODO: Aggiungere routing per la home -->
+      <button class="action-btn home-btn" (click)="goToHome()">
+        🏠 Home
+      </button>
+    </div>
+  </div>
+
+  <div class="calendar-grid">
+    <!-- Intestazioni giorni della settimana -->
+    <div class="day-header" *ngFor="let day of daysOfWeek">
+      {{ day }}
+    </div>
+
+    <!-- Giorni del calendario -->
+    <div 
+      class="calendar-day"
+      *ngFor="let day of calendarDays"
+      [class.other-month]="!day.isCurrentMonth"
+      [class.today]="day.isToday"
+      [class.has-appointments]="day.appointments.length > 0">
+      
+      <div class="day-number">{{ day.day }}</div>
+      
+      <div class="appointments-container" *ngIf="day.appointments.length > 0">
+        <div 
+          class="appointment-item"
+          *ngFor="let appointment of day.appointments"
+          [class.interno]="appointment.type === 'interno'"
+          [class.esterno]="appointment.type === 'esterno'"
+          [class.rifiutata]="appointment.status === 'rifiutata'">
+          
+          <span class="appointment-time">{{ appointment.time }}</span>
+          <span class="appointment-title">{{ appointment.title }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
