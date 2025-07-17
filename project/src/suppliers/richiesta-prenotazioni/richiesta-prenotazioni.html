@@ -1,3 +1,130 @@
-<div>
+<div class="richiesta-prenotazioni-container">
   <h1>Richiedi una Prenotazione</h1>
+
+  <form class="prenotazione-form">
+
+    <!-- Sezione Data -->
+    <div class="form-group">
+      <label for="data">Data: <span class="required">*</span></label>
+      <input
+        type="date"
+        id="data"
+        [value]="selectedDate"
+        (change)="onDateChange($event)"
+        required>
+    </div>
+
+    <!-- Sezione Orario -->
+    <div class="form-group">
+      <label for="orario">Orario: <span class="required">*</span></label>
+      <input
+        type="time"
+        id="orario"
+        [value]="selectedTime"
+        (change)="onTimeChange($event)"
+        required>
+    </div>
+
+    <!-- Sezione Note Opzionali -->
+    <div class="form-group">
+      <label for="note">Note (opzionale):</label>
+      <textarea
+        id="note"
+        rows="4"
+        cols="50"
+        placeholder="Inserisci eventuali note aggiuntive..."
+        [value]="notes"
+        (input)="onNotesChange($event)"></textarea>
+    </div>
+
+    <!-- Sezione Foto -->
+    <div class="form-group">
+      <label>Foto richiesta <span class="required">*</span></label>
+
+      <!-- Selezione file -->
+      <div class="photo-section">
+        <input
+          type="file"
+          #fileInput
+          accept="image/*"
+          (change)="onFileSelected($event)"
+          style="display: none;">
+
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="fileInput.click()">
+          📁 Carica File
+        </button>
+
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="startCamera()"
+          [disabled]="isCameraActive">
+          📷 Avvia Fotocamera
+        </button>
+      </div>
+
+      <!-- Anteprima file selezionato -->
+      <div *ngIf="selectedFile" class="image-preview">
+        <p>File selezionato: {{selectedFile.name}}</p>
+        <button
+          type="button"
+          class="btn-danger"
+          (click)="removeImage()">
+          ❌ Rimuovi
+        </button>
+      </div>
+
+      <!-- Sezione fotocamera -->
+      <div *ngIf="isCameraActive" class="camera-section">
+        <video #videoElement autoplay playsinline></video>
+        <canvas #canvasElement style="display: none;"></canvas>
+        <div class="camera-controls">
+          <button
+            type="button"
+            class="btn-primary"
+            (click)="capturePhoto()">
+            📸 Scatta Foto
+          </button>
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="stopCamera()">
+            ❌ Chiudi Fotocamera
+          </button>
+        </div>
+      </div>
+
+      <!-- Anteprima foto scattata -->
+      <div *ngIf="capturedImage" class="image-preview">
+        <p>Foto scattata:</p>
+        <img [src]="capturedImage" alt="Foto scattata" style="max-width: 200px; max-height: 200px;">
+        <button
+          type="button"
+          class="btn-danger"
+          (click)="removeImage()">
+          ❌ Rimuovi
+        </button>
+      </div>
+    </div>
+
+    <!-- Messaggio di errore -->
+    <div *ngIf="!isFormValid" class="error-message">
+      <p>⚠️ Nessun item disponibile. Contatta l'amministratore.</p>
+    </div>
+
+    <!-- Pulsante di invio -->
+    <div class="form-actions">
+      <button
+        type="button"
+        class="btn-primary btn-submit"
+        [disabled]="!isFormValid"
+        (click)="inviaRichiesta()">
+        Invia Richiesta
+      </button>
+    </div>
+
+  </form>
 </div>
