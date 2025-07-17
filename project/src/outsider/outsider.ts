@@ -267,7 +267,7 @@ export class Outsider implements OnInit, OnDestroy {
    */
   goToHome(): void {
     // TODO: Implementare il routing verso la home page
-    // this.router.navigate(['/home']);
+    this.router.navigate(['/login']);
     console.log('Navigazione verso home page - da implementare');
   }
 }

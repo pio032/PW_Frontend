@@ -1,0 +1,112 @@
+<div class="accept-container">
+  <div class="accept-header">
+    <h2>Richieste di appuntamento</h2>
+    <p>{{ currentDate | date:'fullDate':'':'it' }}</p>
+    
+    <div class="action-buttons">
+      <button class="action-btn refresh-btn" (click)="refreshRequests()">
+        🔄 Aggiorna
+      </button>
+      <!-- TODO: Aggiungere routing per la home -->
+      <button class="action-btn home-btn" (click)="goToHome()">
+        🏠 Home
+      </button>
+    </div>
+  </div>
+
+  <div class="requests-list" *ngIf="appointmentRequests.length > 0">
+    <div 
+      class="request-card"
+      *ngFor="let request of appointmentRequests"
+      [class.accepted]="request.status === 'confermata'"
+      [class.rejected]="request.status === 'rifiutata'"
+      [class.pending]="request.status === 'in_attesa'">
+      
+      <div class="request-photo">
+        <div class="photo-placeholder">
+          <span class="photo-icon">👤</span>
+        </div>
+      </div>
+      
+      <div class="request-info">
+        <div class="request-time">
+          <span class="time-label">Orario richiesto:</span>
+          <span class="time-value">{{ request.time }}</span>
+        </div>
+        
+        <div class="request-name">
+          <span class="name-label">Nome:</span>
+          <span class="name-value">{{ request.personName }}</span>
+        </div>
+        
+        <div class="request-company">
+          <span class="company-label">Ragione Sociale:</span>
+          <span class="company-value">{{ request.company }}</span>
+        </div>
+        
+        <div class="request-contact">
+          <div class="contact-item">
+            <span class="contact-label">Email:</span>
+            <span class="contact-value">{{ request.email }}</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">Telefono:</span>
+            <span class="contact-value">{{ request.phone }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="request-actions">
+        <div class="status-badge" [class]="request.status" *ngIf="request.status !== 'in_attesa'">
+          {{ getStatusText(request.status) }}
+        </div>
+        
+        <div class="action-buttons" *ngIf="request.status === 'in_attesa'">
+          <button 
+            class="action-btn accept-btn" 
+            (click)="acceptRequest(request)"
+            [disabled]="isProcessing">
+            ✅ Accetta
+          </button>
+          
+          <button 
+            class="action-btn reject-btn" 
+            (click)="rejectRequest(request)"
+            [disabled]="isProcessing">
+            ❌ Rifiuta
+          </button>
+        </div>
+        
+        <div class="processed-actions" *ngIf="request.status !== 'in_attesa'">
+          <button 
+            class="action-btn change-btn" 
+            (click)="changeDecision(request)"
+            [disabled]="isProcessing">
+            🔄 Cambia decisione
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-requests" *ngIf="appointmentRequests.length === 0">
+    <div class="no-requests-icon">📋</div>
+    <h3>Nessuna richiesta di appuntamento</h3>
+    <p>Non ci sono richieste di appuntamento in attesa di risposta.</p>
+  </div>
+
+  <!-- Success/Error Messages -->
+  <div class="message success" *ngIf="showSuccessMessage">
+    <div class="message-content">
+      <span class="message-icon">✅</span>
+      <span>{{ successMessage }}</span>
+    </div>
+  </div>
+
+  <div class="message error" *ngIf="showErrorMessage">
+    <div class="message-content">
+      <span class="message-icon">❌</span>
+      <span>{{ errorMessage }}</span>
+    </div>
+  </div>
+</div>

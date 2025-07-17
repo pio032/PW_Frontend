@@ -1,0 +1,298 @@
+.elenco-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.elenco-header {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.elenco-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.elenco-header p {
+  margin: 0;
+  color: #666;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.action-btn {
+  background: white;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.refresh-btn {
+  border-color: #4facfe;
+  color: #4facfe;
+}
+
+.refresh-btn:hover {
+  background: #4facfe;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.home-btn {
+  border-color: #f093fb;
+  color: #f093fb;
+}
+
+.home-btn:hover {
+  background: #f093fb;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.appointment-card {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  transition: all 0.3s ease;
+  border-left: 5px solid #48bb78;
+}
+
+.appointment-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.appointment-card.rifiutata {
+  border-left-color: #e53e3e;
+  background: #fef5f5;
+}
+
+.appointment-card.confermata {
+  border-left-color: #48bb78;
+  background: #f0fff4;
+}
+
+.appointment-card.in-attesa {
+  border-left-color: #ed8936;
+  background: #fffbf0;
+}
+
+.appointment-photo {
+  flex-shrink: 0;
+}
+
+.photo-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 32px;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.appointment-info {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.appointment-time,
+.appointment-name,
+.appointment-company,
+.appointment-reference {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.time-label,
+.name-label,
+.company-label,
+.reference-label {
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.time-value,
+.name-value,
+.company-value,
+.reference-value {
+  font-size: 16px;
+  color: #333;
+  font-weight: 600;
+}
+
+.time-value {
+  color: #667eea;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.appointment-status {
+  flex-shrink: 0;
+}
+
+.status-badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.confermata {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.status-badge.rifiutata {
+  background: #fed7d7;
+  color: #742a2a;
+}
+
+.status-badge.in_attesa {
+  background: #feebc8;
+  color: #7b341e;
+}
+
+.no-appointments {
+  text-align: center;
+  background: white;
+  border-radius: 15px;
+  padding: 60px 40px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 40px;
+}
+
+.no-appointments-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.no-appointments h3 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.no-appointments p {
+  margin: 0;
+  color: #666;
+  font-size: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .elenco-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .appointment-info {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .appointment-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+  
+  .appointment-status {
+    align-self: stretch;
+  }
+}
+
+@media (max-width: 768px) {
+  .elenco-container {
+    padding: 10px;
+  }
+  
+  .elenco-header {
+    padding: 20px;
+  }
+  
+  .elenco-header h2 {
+    font-size: 24px;
+  }
+  
+  .appointment-card {
+    padding: 20px;
+  }
+  
+  .photo-placeholder {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+  }
+  
+  .time-value,
+  .name-value,
+  .company-value,
+  .reference-value {
+    font-size: 14px;
+  }
+  
+  .time-value {
+    font-size: 16px;
+  }
+  
+  .no-appointments {
+    padding: 40px 20px;
+  }
+  
+  .no-appointments-icon {
+    font-size: 48px;
+  }
+  
+  .no-appointments h3 {
+    font-size: 20px;
+  }
+  
+  .no-appointments p {
+    font-size: 14px;
+  }
+}

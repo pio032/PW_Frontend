@@ -1,0 +1,278 @@
+.calendar-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.calendar-header {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.calendar-title h2 {
+  margin: 0;
+  color: #333;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.calendar-title p {
+  margin: 5px 0 0 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.calendar-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.control-btn {
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+  background: #5a67d8;
+  transform: translateY(-2px);
+}
+
+.today-btn {
+  background: #11998e;
+  padding: 10px 20px;
+}
+
+.today-btn:hover {
+  background: #0e7a72;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.action-btn {
+  background: white;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.refresh-btn {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.refresh-btn:hover {
+  background: #667eea;
+  color: white;
+}
+
+.home-btn {
+  border-color: #11998e;
+  color: #11998e;
+}
+
+.home-btn:hover {
+  background: #11998e;
+  color: white;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  background: #e1e8ed;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.day-header {
+  background: #667eea;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.calendar-day {
+  background: white;
+  min-height: 120px;
+  padding: 10px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.calendar-day:hover {
+  background: #f8f9fa;
+}
+
+.calendar-day.other-month {
+  background: #f8f9fa;
+  color: #999;
+}
+
+.calendar-day.today {
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+}
+
+.calendar-day.has-appointments {
+  background: #e8f5e8;
+}
+
+.day-number {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.other-month .day-number {
+  color: #999;
+}
+
+.appointments-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.appointment-item {
+  background: #11998e;
+  color: white;
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.appointment-item:hover {
+  transform: scale(1.02);
+}
+
+.appointment-item.confermata {
+  background: #38ef7d;
+  color: #333;
+}
+
+.appointment-item.rifiutata {
+  background: #ff6b6b;
+  opacity: 0.7;
+}
+
+.appointment-item.in-attesa {
+  background: #feca57;
+  color: #333;
+}
+
+.appointment-time {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.appointment-title {
+  font-size: 9px;
+  font-weight: 500;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.appointment-company {
+  font-size: 8px;
+  opacity: 0.8;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .calendar-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .calendar-day {
+    min-height: 100px;
+    padding: 8px;
+  }
+  
+  .day-number {
+    font-size: 14px;
+  }
+  
+  .appointment-item {
+    font-size: 9px;
+    padding: 4px 6px;
+  }
+}
+
+@media (max-width: 768px) {
+  .calendar-container {
+    padding: 10px;
+  }
+  
+  .calendar-header {
+    padding: 15px;
+  }
+  
+  .calendar-title h2 {
+    font-size: 24px;
+  }
+  
+  .calendar-day {
+    min-height: 80px;
+    padding: 5px;
+  }
+  
+  .day-number {
+    font-size: 12px;
+  }
+  
+  .appointment-item {
+    font-size: 8px;
+    padding: 3px 4px;
+  }
+  
+  .appointment-time {
+    font-size: 8px;
+  }
+  
+  .appointment-title {
+    font-size: 7px;
+  }
+  
+  .appointment-company {
+    font-size: 6px;
+  }
+}
