@@ -7,26 +7,26 @@ interface CalendarDay {
   date: Date;
   isCurrentMonth: boolean;
   isToday: boolean;
-  appointments: Appointment[];
+  appointments: InternoAppointment[];
 }
 
-interface Appointment {
+interface InternoAppointment {
   id: string;
   time: string;
-  title: string;
-  type: 'interno' | 'esterno';
-  status: 'confermata' | 'rifiutata' | 'in_attesa';
   personName: string;
   company: string;
+  status: 'confermata' | 'rifiutata' | 'in_attesa';
+  email: string;
+  phone: string;
 }
 
 @Component({
-  selector: 'app-receptionist-calendar',
+  selector: 'app-interno-calendar',
     imports: [CommonModule], // <-- Add CommonModule
-  templateUrl: './receptionist-calendar.html',
-  styleUrls: ['./receptionist-calendar.css']
+  templateUrl: './interno-calendar.html',
+  styleUrls: ['./interno-calendar.css']
 })
-export class ReceptionistCalendarComponent implements OnInit {
+export class InternoCalendarComponent implements OnInit {
   currentDate: Date = new Date();
   currentMonth: string = '';
   currentYear: number = 0;
@@ -38,79 +38,79 @@ export class ReceptionistCalendarComponent implements OnInit {
     'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
   ];
 
-  // Dati fittizi per popolare il calendario
-  private mockAppointments: Appointment[] = [
+  // Dati fittizi per popolare il calendario (solo appuntamenti per questo interno)
+  private mockAppointments: InternoAppointment[] = [
     {
       id: '1',
       time: '09:00',
-      title: 'Prenotazione per interno',
-      type: 'interno',
-      status: 'confermata',
       personName: 'Mario Rossi',
-      company: 'Tech Solutions SRL'
+      company: 'Tech Solutions SRL',
+      status: 'confermata',
+      email: 'mario.rossi@techsolutions.it',
+      phone: '333-1234567'
     },
     {
       id: '2',
       time: '10:30',
-      title: 'Prenotazione per interno',
-      type: 'interno',
-      status: 'confermata',
       personName: 'Laura Bianchi',
-      company: 'Digital Services SpA'
+      company: 'Digital Services SpA',
+      status: 'in_attesa',
+      email: 'laura.bianchi@digitalservices.com',
+      phone: '339-7654321'
     },
     {
       id: '3',
       time: '14:00',
-      title: 'Prenotazione per interno',
-      type: 'interno',
-      status: 'rifiutata',
       personName: 'Giuseppe Verdi',
-      company: 'Consulting Group'
+      company: 'Consulting Group',
+      status: 'rifiutata',
+      email: 'giuseppe.verdi@consulting.it',
+      phone: '347-9876543'
     },
     {
       id: '4',
       time: '15:30',
-      title: 'Prenotazione per interno',
-      type: 'interno',
-      status: 'confermata',
       personName: 'Anna Neri',
-      company: 'Innovation Lab'
+      company: 'Innovation Lab',
+      status: 'confermata',
+      email: 'anna.neri@innovationlab.com',
+      phone: '346-5432198'
     },
     {
       id: '5',
       time: '11:00',
-      title: 'Prenotazione per interno',
-      type: 'esterno',
-      status: 'confermata',
       personName: 'Francesco Galli',
-      company: 'External Corp'
+      company: 'External Corp',
+      status: 'in_attesa',
+      email: 'francesco.galli@external.com',
+      phone: '338-1122334'
     },
     {
       id: '6',
       time: '16:00',
-      title: 'Prenotazione per interno',
-      type: 'interno',
-      status: 'confermata',
       personName: 'Stefania Blu',
-      company: 'Creative Studio'
+      company: 'Creative Studio',
+      status: 'confermata',
+      email: 'stefania.blu@creative.it',
+      phone: '345-5566778'
     },
     {
       id: '7',
       time: '12:15',
-      title: 'Prenotazione per interno',
-      type: 'interno',
-      status: 'confermata',
       personName: 'Roberto Gialli',
-      company: 'Business Solutions'
+      company: 'Business Solutions',
+      status: 'in_attesa',
+      email: 'roberto.gialli@business.com',
+      phone: '349-9988776'
     },
     {
       id: '8',
       time: '17:00',
-      title: 'Prenotazione per interno',
-      type: 'interno',
-      status: 'confermata',
       personName: 'Elena Viola',
-      company: 'Marketing Plus'
+      company: 'Marketing Plus',
+      status: 'confermata',
+      email: 'elena.viola@marketing.it',
+      phone: '347-3344556'
     }
   ];
 
@@ -167,11 +167,10 @@ export class ReceptionistCalendarComponent implements OnInit {
   }
 
   /**
-   * Ottiene gli appuntamenti per una data specifica
+   * Ottiene gli appuntamenti per una data specifica (solo per questo interno)
    */
-  private getAppointmentsForDate(date: Date): Appointment[] {
-    // Simula appuntamenti casuali per alcune date
-    const appointments: Appointment[] = [];
+  private getAppointmentsForDate(date: Date): InternoAppointment[] {
+    const appointments: InternoAppointment[] = [];
     const dayOfMonth = date.getDate();
     const month = date.getMonth();
     const currentMonth = this.currentDate.getMonth();
@@ -180,41 +179,38 @@ export class ReceptionistCalendarComponent implements OnInit {
     if (month === currentMonth) {
       // Aggiungi appuntamenti basati sul giorno del mese
       switch (dayOfMonth) {
-        case 2:
-          appointments.push({...this.mockAppointments[0], time: '12:34'});
+        case 3:
+          appointments.push({...this.mockAppointments[0], time: '09:00'});
           break;
-        case 6:
-          appointments.push({...this.mockAppointments[1], time: '18:44'});
+        case 5:
+          appointments.push({...this.mockAppointments[1], time: '10:30'});
           break;
         case 8:
-          appointments.push({...this.mockAppointments[2], time: '12:55'});
-          break;
-        case 9:
-          appointments.push({...this.mockAppointments[3], time: '13:51'});
+          appointments.push({...this.mockAppointments[2], time: '14:00'});
           break;
         case 10:
-          appointments.push({...this.mockAppointments[4], time: '10:00'});
+          appointments.push({...this.mockAppointments[3], time: '15:30'});
           break;
-        case 16:
-          appointments.push({...this.mockAppointments[5], time: '17:12'});
+        case 12:
+          appointments.push({...this.mockAppointments[4], time: '11:00'});
           break;
-        case 17:
-          appointments.push({...this.mockAppointments[6], time: '12:12'});
+        case 15:
+          appointments.push({...this.mockAppointments[5], time: '16:00'});
           break;
         case 18:
-          appointments.push({...this.mockAppointments[7], time: '12:12'});
+          appointments.push({...this.mockAppointments[6], time: '12:15'});
+          break;
+        case 20:
+          appointments.push({...this.mockAppointments[7], time: '17:00'});
           break;
         case 22:
-          appointments.push({...this.mockAppointments[0], time: '17:12'});
+          appointments.push({...this.mockAppointments[0], time: '09:30'});
           break;
-        case 23:
-          appointments.push({...this.mockAppointments[1], time: '12:53'});
+        case 25:
+          appointments.push({...this.mockAppointments[1], time: '14:45'});
           break;
-        case 24:
-          appointments.push({...this.mockAppointments[2], time: '12:34'});
-          break;
-        case 30:
-          appointments.push({...this.mockAppointments[3], time: '20:21'});
+        case 28:
+          appointments.push({...this.mockAppointments[2], time: '16:30'});
           break;
       }
       
@@ -223,9 +219,9 @@ export class ReceptionistCalendarComponent implements OnInit {
         const today = new Date();
         if (today.getDate() === dayOfMonth) {
           appointments.push(
-            {...this.mockAppointments[4], time: '09:30'},
-            {...this.mockAppointments[5], time: '14:15'},
-            {...this.mockAppointments[6], time: '16:45'}
+            {...this.mockAppointments[3], time: '09:00'},
+            {...this.mockAppointments[4], time: '11:30'},
+            {...this.mockAppointments[5], time: '15:00'}
           );
         }
       }
@@ -264,7 +260,7 @@ export class ReceptionistCalendarComponent implements OnInit {
    */
   refreshCalendar(): void {
     // TODO: Implementare la ricarica dei dati dal backend
-    console.log('Ricaricamento calendario - da implementare');
+    console.log('Ricaricamento calendario interno - da implementare');
     this.generateCalendar();
   }
 
@@ -273,7 +269,7 @@ export class ReceptionistCalendarComponent implements OnInit {
    */
   goToHome(): void {
     // TODO: Implementare il routing verso la home
-    this.router.navigate(['/receptionist','receptionist-home']);
-    console.log('Navigazione verso home - da implementare');
+    this.router.navigate(['/interno','interno-home']);
+    console.log('Navigazione verso home interno - da implementare');
   }
 }

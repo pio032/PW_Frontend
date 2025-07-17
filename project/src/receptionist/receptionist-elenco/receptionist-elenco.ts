@@ -161,7 +161,7 @@ export class ReceptionistElencoComponent implements OnInit {
    */
   goToHome(): void {
     // TODO: Implementare il routing verso la home
-    // this.router.navigate(['/receptionist/home']);
+    this.router.navigate(['/receptionist','receptionist-home']);
     console.log('Navigazione verso home - da implementare');
   }
 }

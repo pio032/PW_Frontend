@@ -19,7 +19,7 @@ export class ReceptionistHomeComponent implements OnInit {
    */
   goToCalendar(): void {
     // TODO: Implementare il routing verso la pagina del calendario
-    // this.router.navigate(['/receptionist/calendar']);
+    this.router.navigate(['/receptionist','receptionist-calendar']);
     console.log('Navigazione verso calendario - da implementare');
   }
 
@@ -28,7 +28,7 @@ export class ReceptionistHomeComponent implements OnInit {
    */
   goToElenco(): void {
     // TODO: Implementare il routing verso la pagina dell'elenco
-    // this.router.navigate(['/receptionist/elenco']);
+    this.router.navigate(['/receptionist','receptionist-elenco']);
     console.log('Navigazione verso elenco prenotazioni - da implementare');
   }
 }
