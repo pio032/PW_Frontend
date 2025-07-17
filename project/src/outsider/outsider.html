@@ -1,89 +1,205 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrazione Outsider - Accesso Aziendale</title>
-    <link rel="stylesheet" href="outsider.css">
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🏢 Registrazione Outsider</h1>
-            <p>Compila i dati per l'accesso in azienda</p>
-        </div>
-        <form id="outsiderForm">
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="nome">Nome <span class="required">*</span></label>
-                    <input type="text" id="nome" name="nome" required>
-                </div>
-                <div class="form-group">
-                    <label for="cognome">Cognome <span class="required">*</span></label>
-                    <input type="text" id="cognome" name="cognome" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="codiceFiscale">Codice Fiscale <span class="required">*</span></label>
-                <input type="text" id="codiceFiscale" name="codiceFiscale" required maxlength="16" style="text-transform: uppercase;">
-            </div>
-            <div class="form-group">
-                <label for="ragioneSociale">Ragione Sociale <span class="required">*</span></label>
-                <input type="text" id="ragioneSociale" name="ragioneSociale" required>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email">
-                </div>
-                <div class="form-group">
-                    <label for="telefono">Telefono</label>
-                    <input type="tel" id="telefono" name="telefono">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="dataArrivo">Data di Arrivo <span class="required">*</span></label>
-                <input type="date" id="dataArrivo" name="dataArrivo" required>
-            </div>
-            <div class="form-group">
-                <label for="foto">Foto/Selfie <span class="required">*</span></label>
-                <div class="photo-section">
-                    <div class="photo-buttons">
-                        <button type="button" class="photo-btn camera-btn" onclick="openCamera()">
-                            📸 Scatta Foto
-                        </button>
-                        <button type="button" class="photo-btn upload-btn" onclick="document.getElementById('foto').click()">
-                            📁 Carica Foto
-                        </button>
-                    </div>
-                    <input type="file" id="foto" name="foto" accept="image/*" style="display: none;" required>
-                    <div id="cameraContainer" class="camera-container" style="display: none;">
-                        <video id="camera"></video>
-                        <div class="camera-overlay">
-                            <div class="face-guide"></div>
-                        </div>
-                    </div>
-                    <canvas id="canvas" style="display: none;"></canvas>
-                    <img id="photoPreview" class="photo-preview" alt="Anteprima foto">
-                    <div id="cameraControls" style="display: none; margin-top: 15px;">
-                        <button type="button" class="photo-btn capture-btn" onclick="capturePhoto()">
-                            ✨ Cattura
-                        </button>
-                        <button type="button" class="photo-btn cancel-btn" onclick="closeCamera()">
-                            ❌ Annulla
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <button type="submit" class="submit-btn">
-                ✅ Registra Outsider
-            </button>
-            <div id="successMessage" class="success-message">
-                🎉 Registrazione completata con successo! Benvenuto in azienda.
-            </div>
-        </form>
-        <a href="/" id="homeBtn" title="Torna alla Home">🏠 Home</a>
-        <div id="okMessage" class="ok-message">OK</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+<div class="outsider-container">
+  <div class="form-card">
+    <div class="form-header">
+      <div class="icon">🕴️<i class="fas fa-sign-in-alt icon"></i></div>
+      
+      <h2>Registrazione Outsider</h2>
+      <p>Compila i dati per l'accesso in azienda</p>
     </div>
-</body>
-</html>
+
+    <form [formGroup]="outsiderForm" (ngSubmit)="onSubmit()">
+      <!-- Nome e Cognome -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nome">Nome <span class="required">*</span></label>
+          <input 
+            type="text" 
+            id="nome" 
+            formControlName="nome" 
+            [class.error]="isFieldInvalid('nome')"
+            placeholder="Inserisci il nome">
+          <div class="error-message" *ngIf="isFieldInvalid('nome')">
+            Nome è obbligatorio
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cognome">Cognome <span class="required">*</span></label>
+          <input 
+            type="text" 
+            id="cognome" 
+            formControlName="cognome" 
+            [class.error]="isFieldInvalid('cognome')"
+            placeholder="Inserisci il cognome">
+          <div class="error-message" *ngIf="isFieldInvalid('cognome')">
+            Cognome è obbligatorio
+          </div>
+        </div>
+      </div>
+
+      <!-- Codice Fiscale -->
+      <div class="form-group">
+        <label for="codiceFiscale">Codice Fiscale <span class="required">*</span></label>
+        <input 
+          type="text" 
+          id="codiceFiscale" 
+          formControlName="codiceFiscale" 
+          [class.error]="isFieldInvalid('codiceFiscale')"
+          placeholder="Inserisci il codice fiscale"
+          maxlength="16">
+        <div class="error-message" *ngIf="isFieldInvalid('codiceFiscale')">
+          <span *ngIf="outsiderForm.get('codiceFiscale')?.errors?.['required']">
+            Codice fiscale è obbligatorio
+          </span>
+          <span *ngIf="outsiderForm.get('codiceFiscale')?.errors?.['invalidCodiceFiscale']">
+            Codice fiscale non valido
+          </span>
+        </div>
+      </div>
+
+      <!-- Ragione Sociale -->
+      <div class="form-group">
+        <label for="ragioneSociale">Ragione Sociale <span class="required">*</span></label>
+        <input 
+          type="text" 
+          id="ragioneSociale" 
+          formControlName="ragioneSociale" 
+          [class.error]="isFieldInvalid('ragioneSociale')"
+          placeholder="Inserisci la ragione sociale">
+        <div class="error-message" *ngIf="isFieldInvalid('ragioneSociale')">
+          Ragione sociale è obbligatoria
+        </div>
+      </div>
+
+      <!-- Email e Telefono -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">Email <span class="required">*</span></label>
+          <input 
+            type="email" 
+            id="email" 
+            formControlName="email" 
+            [class.error]="isFieldInvalid('email')"
+            placeholder="Inserisci l'email">
+          <div class="error-message" *ngIf="isFieldInvalid('email')">
+            <span *ngIf="outsiderForm.get('email')?.errors?.['required']">
+              Email è obbligatoria
+            </span>
+            <span *ngIf="outsiderForm.get('email')?.errors?.['email']">
+              Email non valida
+            </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="telefono">Telefono <span class="required">*</span></label>
+          <input 
+            type="tel" 
+            id="telefono" 
+            formControlName="telefono" 
+            [class.error]="isFieldInvalid('telefono')"
+            placeholder="Inserisci il telefono">
+          <div class="error-message" *ngIf="isFieldInvalid('telefono')">
+            Telefono è obbligatorio
+          </div>
+        </div>
+      </div>
+
+      <!-- Data di Arrivo -->
+      <div class="form-group">
+        <label for="dataArrivo">Data di Arrivo <span class="required">*</span></label>
+        <input 
+          type="date" 
+          id="dataArrivo" 
+          formControlName="dataArrivo" 
+          [class.error]="isFieldInvalid('dataArrivo')">
+        <div class="error-message" *ngIf="isFieldInvalid('dataArrivo')">
+          Data di arrivo è obbligatoria
+        </div>
+      </div>
+
+      <!-- Foto/Selfie -->
+      <div class="form-group">
+        <label>Foto/Selfie <span class="required">*</span></label>
+        <div class="photo-section">
+          <div class="photo-buttons">
+            <button 
+              type="button" 
+              class="btn btn-camera" 
+              (click)="startCamera()"
+              [disabled]="isCameraActive">
+              📷 Scatta Foto
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-upload" 
+              (click)="fileInput.click()">
+              📁 Carica Foto
+            </button>
+          </div>
+          
+          <input 
+            #fileInput 
+            type="file" 
+            accept="image/*" 
+            (change)="onFileSelected($event)" 
+            style="display: none;">
+
+          <!-- Camera Preview -->
+          <div class="camera-container" *ngIf="isCameraActive">
+            <video #videoElement autoplay playsinline></video>
+            <canvas #canvasElement style="display: none;"></canvas>
+            <div class="camera-controls">
+              <button type="button" class="btn btn-capture" (click)="capturePhoto()">
+                📸 Scatta
+              </button>
+              <button type="button" class="btn btn-cancel" (click)="stopCamera()">
+                ❌ Annulla
+              </button>
+            </div>
+          </div>
+
+          <!-- Photo Preview -->
+          <div class="photo-preview" *ngIf="selectedPhoto">
+            <img [src]="selectedPhoto" alt="Foto selezionata">
+            <button type="button" class="btn btn-remove" (click)="removePhoto()">
+              🗑️ Rimuovi
+            </button>
+          </div>
+        </div>
+        <div class="error-message" *ngIf="isFieldInvalid('foto')">
+          Foto è obbligatoria
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button 
+        type="submit" 
+        class="btn btn-submit" 
+        [disabled]="outsiderForm.invalid">
+        <span *ngIf="!isSubmitting">✅ Registra Outsider</span>
+        <span *ngIf="isSubmitting">⏳ Registrazione in corso...</span>
+      </button>
+    </form>
+
+    <!-- Success/Error Messages -->
+    <div class="message success" *ngIf="showSuccessMessage">
+      <div class="message-content">
+        <span class="message-icon">✅</span>
+        <span>Registrazione completata con successo!</span>
+      </div>
+    </div>
+
+    <div class="message error" *ngIf="showErrorMessage">
+      <div class="message-content">
+        <span class="message-icon">❌</span>
+        <span>Errore durante la registrazione. Riprova.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Home Button -->
+  <!-- TODO: Aggiungere routing per la home page -->
+  <button class="home-btn" (click)="goToHome()">
+    🏠 Home
+  </button>
+</div>

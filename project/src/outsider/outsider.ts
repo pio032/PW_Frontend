@@ -1,187 +1,273 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-outsider',
-//   imports: [],
-//   templateUrl: './outsider.html',
-//   styleUrl: './outsider.css'
-// })
-// export class Outsider {
-
-// }
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-outsider',
-  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './outsider.html',
-  styleUrls: ['./outsider.css'],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  styleUrls: ['./outsider.css']
 })
-export class OutsiderComponent implements OnInit {
-  outsiderForm!: FormGroup;
-  today = new Date().toISOString().split('T')[0];
-  photoPreviewUrl: string | null = null;
-  showCamera = false;
-  loading = false;
-  successMessage = '';
-  showOkMessage = false;
-
+export class Outsider implements OnInit, OnDestroy {
   @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
   @ViewChild('canvasElement') canvasElement!: ElementRef<HTMLCanvasElement>;
-  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
-  private stream: MediaStream | null = null;
+  outsiderForm: FormGroup;
+  isCameraActive = false;
+  selectedPhoto: string | null = null;
+  photoFile: File | null = null;
+  mediaStream: MediaStream | null = null;
+  isSubmitting = false;
+  showSuccessMessage = false;
+  showErrorMessage = false;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router
+  ) {
+    this.outsiderForm = this.fb.group({
+      nome: ['', [Validators.required]],
+      cognome: ['', [Validators.required]],
+      codiceFiscale: ['', [Validators.required, this.codiceFiscaleValidator]],
+      ragioneSociale: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      telefono: ['', [Validators.required]],
+      dataArrivo: ['', [Validators.required]],
+      foto: ['', [Validators.required]]
+    });
+  }
 
   ngOnInit(): void {
-    this.outsiderForm = this.fb.group({
-      nome: ['', Validators.required],
-      cognome: ['', Validators.required],
-      codiceFiscale: ['', [Validators.required, Validators.maxLength(16)]],
-      ragioneSociale: ['', Validators.required],
-      email: ['', Validators.required],
-      telefono: ['', Validators.required],
-      dataArrivo: ['', Validators.required],
-    });
-
-    this.outsiderForm
-      .get('codiceFiscale')
-      ?.valueChanges.subscribe((value) => {
-        if (value) {
-          const upper = value
-            .toUpperCase()
-            .replace(/[^A-Z0-9]/g, '');
-          this.outsiderForm
-            .get('codiceFiscale')
-            ?.setValue(upper, { emitEvent: false });
-        }
-      });
+    // Inizializzazione componente
   }
 
-  triggerUpload() {
-    this.photoPreviewUrl = null;
-    this.fileInput.nativeElement.value = '';
-    this.fileInput.nativeElement.click();
+  ngOnDestroy(): void {
+    this.stopCamera();
   }
 
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files?.length) {
-      const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.photoPreviewUrl = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-    } else {
-      this.photoPreviewUrl = null;
+  /**
+   * Validatore personalizzato per il codice fiscale italiano
+   */
+  codiceFiscaleValidator(control: AbstractControl): { [key: string]: any } | null {
+    const value = control.value;
+    if (!value) return null;
+
+    // Regex per codice fiscale italiano
+    const codiceFiscaleRegex = /^[A-Z]{6}[0-9]{2}[A-EHLMPR-T][0-9]{2}[A-Z][0-9]{3}[A-Z]$/i;
+    
+    if (!codiceFiscaleRegex.test(value.toUpperCase())) {
+      return { invalidCodiceFiscale: true };
     }
+
+    return null;
   }
 
-  async openCamera() {
+  /**
+   * Verifica se un campo è invalido e è stato toccato
+   */
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.outsiderForm.get(fieldName);
+    return !!(field && field.invalid && (field.dirty || field.touched));
+  }
+
+  /**
+   * Avvia la fotocamera
+   */
+  async startCamera(): Promise<void> {
     try {
-      this.photoPreviewUrl = null;
-      this.stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          width: { ideal: 640 },
-          height: { ideal: 480 },
-          facingMode: 'user',
-        },
+      this.mediaStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user' },
+        audio: false
       });
-      this.videoElement.nativeElement.srcObject = this.stream;
-      this.showCamera = true;
-      await this.videoElement.nativeElement.play();
-    } catch (err: any) {
-      alert('Impossibile accedere alla fotocamera: ' + err.message);
-      console.error('Errore fotocamera:', err);
+
+      this.isCameraActive = true;
+      
+      // Aspetta che il DOM sia aggiornato
+      setTimeout(() => {
+        if (this.videoElement?.nativeElement) {
+          this.videoElement.nativeElement.srcObject = this.mediaStream;
+        }
+      }, 100);
+    } catch (error) {
+      console.error('Errore nell\'accesso alla fotocamera:', error);
+      alert('Impossibile accedere alla fotocamera. Assicurati di aver dato i permessi necessari.');
     }
   }
 
-  capturePhoto() {
+  /**
+   * Ferma la fotocamera
+   */
+  stopCamera(): void {
+    if (this.mediaStream) {
+      this.mediaStream.getTracks().forEach(track => track.stop());
+      this.mediaStream = null;
+    }
+    this.isCameraActive = false;
+  }
+
+  /**
+   * Scatta una foto utilizzando la fotocamera
+   */
+  capturePhoto(): void {
+    if (!this.videoElement?.nativeElement || !this.canvasElement?.nativeElement) {
+      return;
+    }
+
     const video = this.videoElement.nativeElement;
     const canvas = this.canvasElement.nativeElement;
-    const ctx = canvas.getContext('2d');
-    if (ctx) {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      ctx.drawImage(video, 0, 0);
+    const context = canvas.getContext('2d');
 
-      canvas.toBlob((blob) => {
-        if (blob) {
-          const url = URL.createObjectURL(blob);
-          this.photoPreviewUrl = url;
+    if (!context) return;
 
-          // Simulare l'upload
-          const file = new File([blob], 'selfie.jpg', {
-            type: 'image/jpeg',
-          });
-          const dataTransfer = new DataTransfer();
-          dataTransfer.items.add(file);
-          this.fileInput.nativeElement.files = dataTransfer.files;
+    // Imposta le dimensioni del canvas
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    // Disegna il frame corrente del video sul canvas
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Converti il canvas in blob e poi in data URL
+    canvas.toBlob((blob) => {
+      if (blob) {
+        this.photoFile = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+        this.selectedPhoto = canvas.toDataURL('image/jpeg');
+        this.outsiderForm.patchValue({ foto: 'camera-photo.jpg' });
+        this.stopCamera();
+      }
+    }, 'image/jpeg', 0.8);
+  }
+
+  /**
+   * Gestisce la selezione di un file
+   */
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      
+      // Verifica che sia un'immagine
+      if (file.type.startsWith('image/')) {
+        this.photoFile = file;
+        
+        // Crea un'anteprima dell'immagine
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.selectedPhoto = e.target?.result as string;
+          this.outsiderForm.patchValue({ foto: file.name });
+        };
+        reader.readAsDataURL(file);
+      } else {
+        alert('Seleziona un file immagine valido.');
+      }
+    }
+  }
+
+  /**
+   * Rimuove la foto selezionata
+   */
+  removePhoto(): void {
+    this.selectedPhoto = null;
+    this.photoFile = null;
+    this.outsiderForm.patchValue({ foto: '' });
+  }
+
+  /**
+   * Invia il form
+   */
+  async onSubmit(): Promise<void> {
+    if (this.outsiderForm.valid && this.photoFile) {
+      this.isSubmitting = true;
+      this.showSuccessMessage = false;
+      this.showErrorMessage = false;
+
+      try {
+        // Prepara i dati per l'invio
+        const formData = {
+          nome: this.outsiderForm.get('nome')?.value,
+          cognome: this.outsiderForm.get('cognome')?.value,
+          codiceFiscale: this.outsiderForm.get('codiceFiscale')?.value.toUpperCase(),
+          ragioneSociale: this.outsiderForm.get('ragioneSociale')?.value,
+          email: this.outsiderForm.get('email')?.value,
+          telefono: this.outsiderForm.get('telefono')?.value,
+          dataArrivo: this.outsiderForm.get('dataArrivo')?.value,
+          foto: this.photoFile ? await this.fileToBase64(this.photoFile) : null
+        };
+
+        console.log('Dati da inviare al backend:', formData);
+
+        // TODO: Implementare la chiamata al backend
+        // await this.backendService.registraOutsider(formData);
+
+        // Simula una chiamata al backend
+        await this.simulateBackendCall();
+
+        this.showSuccessMessage = true;
+        this.resetForm();
+      } catch (error) {
+        console.error('Errore durante la registrazione:', error);
+        this.showErrorMessage = true;
+      } finally {
+        this.isSubmitting = false;
+      }
+    } else {
+      // Marca tutti i campi come toccati per mostrare gli errori
+      this.markAllFieldsAsTouched();
+    }
+  }
+
+  /**
+   * Converte un file in base64
+   */
+  private fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  /**
+   * Simula una chiamata al backend
+   */
+  private simulateBackendCall(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        // Simula successo nel 90% dei casi
+        if (Math.random() > 0.1) {
+          resolve();
+        } else {
+          reject(new Error('Errore simulato'));
         }
-      }, 'image/jpeg', 0.8);
-    }
-    this.closeCamera();
+      }, 2000);
+    });
   }
 
-  closeCamera() {
-    if (this.stream) {
-      this.stream.getTracks().forEach((track) => track.stop());
-      this.stream = null;
-    }
-    this.showCamera = false;
+  /**
+   * Marca tutti i campi come toccati
+   */
+  private markAllFieldsAsTouched(): void {
+    Object.keys(this.outsiderForm.controls).forEach(key => {
+      this.outsiderForm.get(key)?.markAsTouched();
+    });
   }
 
-  onSubmit() {
-    if (this.outsiderForm.invalid) {
-      this.outsiderForm.markAllAsTouched();
-      return;
-    }
+  /**
+   * Reset del form
+   */
+  private resetForm(): void {
+    this.outsiderForm.reset();
+    this.removePhoto();
+    this.stopCamera();
+  }
 
-    const codiceFiscale = this.outsiderForm.get('codiceFiscale')?.value;
-    if (codiceFiscale && codiceFiscale.length !== 16) {
-      alert('Il codice fiscale deve essere di 16 caratteri');
-      return;
-    }
-
-    this.loading = true;
-
-    const formData = new FormData();
-    Object.entries(this.outsiderForm.value).forEach(([key, value]) => {
-      formData.append(key, value as string);
-    });
-
-    const file = this.fileInput.nativeElement.files?.[0];
-    if (file) {
-      formData.append('foto', file);
-    }
-
-    const SPRING_BOOT_ENDPOINT = 'http://localhost:8080/out/register';
-
-    this.http.post(SPRING_BOOT_ENDPOINT, formData).subscribe({
-      next: (response: any) => {
-        this.successMessage =
-          '🎉 Registrazione completata con successo! ID: ' +
-          (response.id || 'N/A');
-        this.loading = false;
-        this.showOkMessage = true;
-        setTimeout(() => {
-          this.showOkMessage = false;
-        }, 2000);
-      },
-      error: (error) => {
-        alert(
-          '❌ Errore durante la registrazione: ' +
-            error.message +
-            '\n\nRiprova o contatta l\'assistenza.'
-        );
-        this.loading = false;
-      },
-    });
+  /**
+   * Naviga alla home page
+   */
+  goToHome(): void {
+    // TODO: Implementare il routing verso la home page
+    // this.router.navigate(['/home']);
+    console.log('Navigazione verso home page - da implementare');
   }
 }
