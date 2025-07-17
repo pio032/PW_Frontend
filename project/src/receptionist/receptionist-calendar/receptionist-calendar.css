@@ -1,6 +1,6 @@
 .calendar-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: #418d5b;
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -32,7 +32,7 @@
 }
 
 .control-btn {
-  background: #667eea;
+  background: #418d5b;
   color: white;
   border: none;
   border-radius: 8px;
@@ -44,7 +44,7 @@
 }
 
 .control-btn:hover {
-  background: #5a67d8;
+  background: #2f6b42;
   transform: translateY(-2px);
 }
 
@@ -74,12 +74,12 @@
 }
 
 .refresh-btn {
-  border-color: #4facfe;
-  color: #4facfe;
+  border-color: #418d5b;
+  color: #418d5b;
 }
 
 .refresh-btn:hover {
-  background: #4facfe;
+  background: #418d5b;
   color: white;
 }
 
@@ -104,7 +104,7 @@
 }
 
 .day-header {
-  background: #667eea;
+  background: #418d5b;
   color: white;
   padding: 15px;
   text-align: center;
@@ -156,7 +156,7 @@
 }
 
 .appointment-item {
-  background: #667eea;
+  background: #418d5b;
   color: white;
   padding: 4px 8px;
   border-radius: 4px;
