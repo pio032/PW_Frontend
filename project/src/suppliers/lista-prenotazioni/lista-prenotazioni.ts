@@ -21,9 +21,9 @@ interface Prenotazione {
 export class ListaPrenotazioni implements OnInit {
   prenotazioni: Prenotazione[] = [];
   filtroStato: string = 'tutte';
-countApprovate: any;
-countRifiutate: any;
-countPendenti: any;
+  countApprovate: any;
+  countRifiutate: any;
+  countPendenti: any;
 
   constructor() { }
 
@@ -31,16 +31,15 @@ countPendenti: any;
     this.caricaPrenotazioni();
   }
 
-  // Carica le prenotazioni (dati fittizi per demo)
   caricaPrenotazioni(): void {
     this.prenotazioni = [
       {
         id: 1,
         data: '2025-07-25',
         orario: '14:30',
-        note: 'Necessaria per controllo annuale, portare documenti precedenti',
+        note: 'Il fornitore potrebbe arrivare con qualche minuto di ritardo',
         immagine: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=',
-        nomeFile: 'documento_medico.jpg',
+        nomeFile: 'foto.jpg',
         stato: 'pendente',
         dataRichiesta: '2025-07-20'
       },
@@ -48,9 +47,9 @@ countPendenti: any;
         id: 2,
         data: '2025-07-28',
         orario: '09:15',
-        note: 'Prima visita, si prega di arrivare 15 minuti prima',
+        note: 'merce fragile, maneggiare con cura',
         immagine: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=',
-        nomeFile: 'ricetta_medica.jpg',
+        nomeFile: 'foto.jpg',
         stato: 'approvata',
         dataRichiesta: '2025-07-18'
       },
@@ -60,14 +59,13 @@ countPendenti: any;
         orario: '16:45',
         note: '',
         immagine: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=',
-        nomeFile: 'camera-photo.jpg',
+        nomeFile: 'foto.jpg',
         stato: 'rifiutata',
         dataRichiesta: '2025-07-19'
       }
     ];
   }
 
-  // Filtra le prenotazioni per stato
   get prenotazioniFiltrate(): Prenotazione[] {
     if (this.filtroStato === 'tutte') {
       return this.prenotazioni;
@@ -75,12 +73,10 @@ countPendenti: any;
     return this.prenotazioni.filter(p => p.stato === this.filtroStato);
   }
 
-  // Cambia il filtro
   cambiaFiltro(stato: string): void {
     this.filtroStato = stato;
   }
 
-  // Formatta la data per la visualizzazione
   formattaData(data: string): string {
     const date = new Date(data);
     return date.toLocaleDateString('it-IT', {
@@ -91,12 +87,10 @@ countPendenti: any;
     });
   }
 
-  // Formatta l'orario per la visualizzazione
   formattaOrario(orario: string): string {
     return orario;
   }
 
-  // Ottieni la classe CSS per lo stato
   getStatoClass(stato: string): string {
     switch (stato) {
       case 'approvata':
@@ -108,7 +102,6 @@ countPendenti: any;
     }
   }
 
-  // Ottieni il testo dello stato
   getStatoTesto(stato: string): string {
     switch (stato) {
       case 'approvata':
@@ -120,7 +113,6 @@ countPendenti: any;
     }
   }
 
-  // Ottieni l'icona dello stato
   getStatoIcon(stato: string): string {
     switch (stato) {
       case 'approvata':
@@ -132,14 +124,12 @@ countPendenti: any;
     }
   }
 
-  // Elimina una prenotazione
   eliminaPrenotazione(id: number): void {
     if (confirm('Sei sicuro di voler eliminare questa prenotazione?')) {
       this.prenotazioni = this.prenotazioni.filter(p => p.id !== id);
     }
   }
 
-  // Scarica l'immagine
   scaricaImmagine(immagine: string, nomeFile: string): void {
     const link = document.createElement('a');
     link.href = immagine;
