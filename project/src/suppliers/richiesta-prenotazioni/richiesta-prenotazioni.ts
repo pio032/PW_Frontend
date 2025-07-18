@@ -167,7 +167,7 @@ export class RichiestaPrenotazioni implements OnInit, OnDestroy {
     this.checkFormValidity();
   }
 
-  // Cleanup quando il componente viene distrutto
+  // Cleanuup quando il componente viene distrutto
   ngOnDestroy(): void {
     this.stopCamera();
   }

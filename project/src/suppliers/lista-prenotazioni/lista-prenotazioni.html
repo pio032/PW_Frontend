@@ -1,3 +1,108 @@
-<div>
+<div class="lista-prenotazioni-container">
   <h1>Lista Prenotazioni</h1>
+
+  <!-- Filtri -->
+  <div class="filtri-container">
+    <div class="filtri-buttons">
+      <button
+        class="btn-filtro"
+        [class.active]="filtroStato === 'tutte'"
+        (click)="cambiaFiltro('tutte')">
+        Tutte ({{prenotazioni.length}})
+      </button>
+      <button
+        class="btn-filtro"
+        [class.active]="filtroStato === 'pendente'"
+        (click)="cambiaFiltro('pendente')">
+        ⏳ In attesa ({{countPendenti}})
+      </button>
+      <button
+        class="btn-filtro"
+        [class.active]="filtroStato === 'approvata'"
+        (click)="cambiaFiltro('approvata')">
+        ✅ Approvate ({{countApprovate}})
+      </button>
+      <button
+        class="btn-filtro"
+        [class.active]="filtroStato === 'rifiutata'"
+        (click)="cambiaFiltro('rifiutata')">
+        ❌ Rifiutate ({{countRifiutate}})
+      </button>
+    </div>
+  </div>
+
+  <!-- Lista prenotazioni -->
+  <div class="prenotazioni-grid">
+    <div
+      *ngFor="let prenotazione of prenotazioniFiltrate"
+      class="prenotazione-card">
+
+      <!-- Header della card -->
+      <div class="card-header">
+        <div class="data-info">
+          <div class="data-principale">
+            {{formattaData(prenotazione.data)}}
+          </div>
+          <div class="orario">
+            🕐 {{formattaOrario(prenotazione.orario)}}
+          </div>
+        </div>
+        <div class="stato-badge" [ngClass]="getStatoClass(prenotazione.stato)">
+          {{getStatoIcon(prenotazione.stato)}} {{getStatoTesto(prenotazione.stato)}}
+        </div>
+      </div>
+
+      <!-- Contenuto della card -->
+      <div class="card-content">
+
+        <!-- Note -->
+        <div class="note-section" *ngIf="prenotazione.note">
+          <h4>📝 Note</h4>
+          <p>{{prenotazione.note}}</p>
+        </div>
+
+        <!-- Immagine -->
+        <div class="immagine-section" *ngIf="prenotazione.immagine">
+          <h4>📷 Documento allegato</h4>
+          <div class="immagine-container">
+            <img [src]="prenotazione.immagine" [alt]="prenotazione.nomeFile" class="immagine-thumbnail">
+            <div class="immagine-info">
+              <p class="nome-file">{{prenotazione.nomeFile}}</p>
+              <button
+                class="btn-secondary btn-small"
+                (click)="scaricaImmagine(prenotazione.immagine!, prenotazione.nomeFile!)">
+                ⬇️ Scarica
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info aggiuntive -->
+        <div class="info-richiesta">
+          <small>Richiesta del: {{formattaData(prenotazione.dataRichiesta)}}</small>
+        </div>
+      </div>
+
+      <!-- Footer della card -->
+      <div class="card-footer">
+        <button
+          class="btn-danger btn-small"
+          (click)="eliminaPrenotazione(prenotazione.id)">
+          🗑️ Elimina
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Messaggio quando non ci sono prenotazioni -->
+  <div *ngIf="prenotazioniFiltrate.length === 0" class="no-prenotazioni">
+    <div class="no-prenotazioni-icon">📅</div>
+    <h3>Nessuna prenotazione trovata</h3>
+    <p *ngIf="filtroStato !== 'tutte'">
+      Non ci sono prenotazioni con stato "{{getStatoTesto(filtroStato)}}"
+    </p>
+    <p *ngIf="filtroStato === 'tutte'">
+      Non hai ancora nessuna prenotazione
+    </p>
+  </div>
 </div>
