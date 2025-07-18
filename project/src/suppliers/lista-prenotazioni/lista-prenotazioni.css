@@ -1,0 +1,398 @@
+/* Reset globale per rimuovere tutti i margini */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+/* Container principale */
+.lista-prenotazioni-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #418D5B 0%, #357a4a 100%);
+  padding: 20px 20px 0 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Titolo */
+h1 {
+  text-align: center;
+  color: white;
+  margin: 0 0 30px 0;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+/* Filtri */
+.filtri-container {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.filtri-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-filtro {
+  padding: 12px 24px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+.btn-filtro:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-filtro.active {
+  background: white;
+  color: #333;
+  border-color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Grid delle prenotazioni */
+.prenotazioni-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+/* Card prenotazione */
+.prenotazione-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.prenotazione-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #418D5B, #357a4a);
+}
+
+.prenotazione-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* Header della card */
+.card-header {
+  background: linear-gradient(135deg, #418D5B 0%, #357a4a 100%);
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.data-info {
+  flex: 1;
+}
+
+.data-principale {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  text-transform: capitalize;
+}
+
+.orario {
+  font-size: 14px;
+  opacity: 0.9;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Badge stato */
+.stato-badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  min-width: 100px;
+}
+
+.stato-pendente {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+.stato-approvata {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.stato-rifiutata {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Contenuto della card */
+.card-content {
+  padding: 20px;
+}
+
+.note-section,
+.immagine-section {
+  margin-bottom: 20px;
+}
+
+.note-section h4,
+.immagine-section h4 {
+  color: #333;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.note-section p {
+  color: #666;
+  line-height: 1.5;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #418D5B;
+  margin: 0;
+}
+
+/* Sezione immagine */
+.immagine-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 2px solid #e1e8ed;
+}
+
+.immagine-thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #e1e8ed;
+}
+
+.immagine-info {
+  flex: 1;
+}
+
+.nome-file {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 10px;
+  word-break: break-all;
+}
+
+/* Info richiesta */
+.info-richiesta {
+  color: #666;
+  font-size: 12px;
+  text-align: right;
+  border-top: 1px solid #e1e8ed;
+  padding-top: 15px;
+  margin-top: 15px;
+}
+
+/* Footer della card */
+.card-footer {
+  padding: 20px;
+  background: #f8f9fa;
+  border-top: 1px solid #e1e8ed;
+  text-align: right;
+}
+
+/* Pulsanti */
+.btn-secondary {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #3498db;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #e74c3c;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #c0392b;
+  transform: translateY(-2px);
+}
+
+.btn-small {
+  padding: 6px 12px;
+  font-size: 11px;
+}
+
+/* Messaggio nessuna prenotazione */
+.no-prenotazioni {
+  text-align: center;
+  padding: 60px 20px;
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.no-prenotazioni-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+
+.no-prenotazioni h3 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.no-prenotazioni p {
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .lista-prenotazioni-container {
+    padding: 10px 10px 0 10px;
+  }
+
+  .prenotazioni-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .card-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .stato-badge {
+    align-self: flex-start;
+  }
+
+  .filtri-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-filtro {
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+  }
+
+  .immagine-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .immagine-thumbnail {
+    width: 80px;
+    height: 80px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lista-prenotazioni-container {
+    padding: 5px 5px 0 5px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  .card-content {
+    padding: 15px;
+  }
+
+  .card-header {
+    padding: 15px;
+  }
+
+  .data-principale {
+    font-size: 16px;
+  }
+
+  .no-prenotazioni {
+    padding: 40px 15px;
+  }
+
+  .no-prenotazioni-icon {
+    font-size: 48px;
+  }
+
+  .no-prenotazioni h3 {
+    font-size: 20px;
+  }
+}
