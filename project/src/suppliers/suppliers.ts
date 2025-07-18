@@ -11,11 +11,10 @@ export class Suppliers {
   constructor(private router: Router) { }
 
   navigateToListaPrenotazioni(): void {
-    this.router.navigate(['/listaPrenotazioni']);
+    this.router.navigate(['/suppliers/listaPrenotazioni']);
   }
 
   navigateToRichiestaPrenotazioni(): void {
-    this.router.navigate(['/richiestaPrenotazioni']);
+    this.router.navigate(['/suppliers/richiestaPrenotazioni']);
   }
 }
-
