@@ -1,6 +1,6 @@
 .receptionist-home-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: #418d5b;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,7 +27,7 @@
   left: 0;
   right: 0;
   height: 6px;
-  background: linear-gradient(90deg, #4facfe, #00f2fe);
+  background: #418d5b;
 }
 
 .header {
@@ -87,18 +87,18 @@
 }
 
 .calendar-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #418d5b 0%, #2f6b42 100%);
   color: white;
   border: none;
 }
 
 .calendar-button:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 10px 30px rgba(65, 141, 91, 0.4);
 }
 
 .list-button {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
   color: white;
   border: none;
 }

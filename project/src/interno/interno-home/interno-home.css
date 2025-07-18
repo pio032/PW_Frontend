@@ -1,6 +1,6 @@
 .interno-home-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #418d5b;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,7 +27,7 @@
   left: 0;
   right: 0;
   height: 6px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
+  background: #418d5b;
 }
 
 .header {
@@ -87,14 +87,14 @@
 }
 
 .calendar-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #418d5b 0%, #2f6b42 100%);
   color: white;
   border: none;
 }
 
 .calendar-button:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 10px 30px rgba(65, 141, 91, 0.4);
 }
 
 .accept-button {

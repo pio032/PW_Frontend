@@ -1,6 +1,6 @@
 .accept-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #418d5b;
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -57,12 +57,12 @@
 
 .refresh-btn {
   background: white;
-  border: 2px solid #667eea;
-  color: #667eea;
+  border: 2px solid #418d5b;
+  color: #418d5b;
 }
 
 .refresh-btn:hover:not(:disabled) {
-  background: #667eea;
+  background: #418d5b;
   color: white;
   transform: translateY(-2px);
 }
@@ -125,13 +125,13 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #418d5b 0%, #2f6b42 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-size: 32px;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(65, 141, 91, 0.3);
 }
 
 .request-info {
@@ -184,7 +184,7 @@
 }
 
 .time-value {
-  color: #667eea;
+  color: #418d5b;
   font-size: 18px;
   font-weight: 700;
 }

@@ -1,6 +1,6 @@
 .outsider-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #418d5b;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -26,7 +26,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
+  background: #418d5b;
 }
 
 .form-header {
@@ -89,8 +89,8 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #418d5b;
+  box-shadow: 0 0 0 3px rgba(65, 141, 91, 0.1);
 }
 
 .form-group input.error {
@@ -191,7 +191,7 @@
 
 .btn-submit {
   width: 100%;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #418d5b, #2f6b42);
   color: white;
   padding: 16px;
   font-size: 16px;
@@ -201,7 +201,7 @@
 
 .btn-submit:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 25px rgba(65, 141, 91, 0.3);
 }
 
 .btn-submit:disabled {

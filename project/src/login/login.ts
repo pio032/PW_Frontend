@@ -17,7 +17,6 @@ export class Login {
   // Credenziali predefinite
   private validCredentials: { [key: string]: { password: string; role: string } } = {
     'int': { password: 'int', role: 'interno' },
-    'out': { password: 'out', role: 'outsider' },
     'rec': { password: 'rec', role: 'receptionist' },
     'sup': { password: 'sup', role: 'suppliers' }
   };
@@ -64,12 +63,6 @@ export class Login {
         console.log('Reindirizzamento a pagina interno - da implementare');
         break;
         
-      case 'outsider':
-        // TODO: Implementare routing per outsider
-        this.router.navigate(['/outsider']);
-        console.log('Reindirizzamento a pagina outsider - da implementare');
-        break;
-        
       case 'receptionist':
         // TODO: Implementare routing per receptionist
         this.router.navigate(['/receptionist','receptionist-home']);
@@ -95,6 +88,6 @@ export class Login {
 
   goToOutsider() {
     // TODO: Implementare routing per outsider
-    // this.router.navigate(['/outsider']);
+    this.router.navigate(['/outsider']);
   }
 }
