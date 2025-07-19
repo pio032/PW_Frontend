@@ -31,4 +31,10 @@ export class InternoHomeComponent implements OnInit {
     this.router.navigate(['/interno','interno-accept']);
     console.log('Navigazione verso accettazione prenotazioni - da implementare');
   }
+
+  goToLogin(): void {
+    // TODO: Implementare il routing verso la home page
+    this.router.navigate(['/login']);
+    console.log('Navigazione verso home page - da implementare');
+  }
 }
