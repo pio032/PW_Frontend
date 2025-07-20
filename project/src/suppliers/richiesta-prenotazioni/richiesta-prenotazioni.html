@@ -110,9 +110,48 @@
       </div>
     </div>
 
+    <!-- Sezione Bolla dell'Ordine -->
+    <div class="form-group">
+      <label>Bolla dell'ordine <span class="required">*</span></label>
+
+      <!-- Selezione file bolla -->
+      <div class="photo-section">
+        <input
+          type="file"
+          #bollaInput
+          accept="image/*,.pdf,.doc,.docx"
+          (change)="onBollaSelected($event)"
+          style="display: none;">
+
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="bollaInput.click()">
+          📄 Carica Bolla
+        </button>
+      </div>
+
+      <!-- Anteprima bolla selezionata -->
+      <div *ngIf="selectedBolla" class="image-preview">
+        <p>Bolla caricata: {{selectedBolla.name}}</p>
+        <div *ngIf="bollaImagePreview" class="bolla-preview">
+          <img [src]="bollaImagePreview" alt="Anteprima bolla" style="max-width: 200px; max-height: 200px;">
+        </div>
+        <div *ngIf="!bollaImagePreview && selectedBolla" class="file-icon">
+          📄 {{getFileIcon(selectedBolla.type)}} {{selectedBolla.name}}
+        </div>
+        <button
+          type="button"
+          class="btn-danger"
+          (click)="removeBolla()">
+          ❌ Rimuovi Bolla
+        </button>
+      </div>
+    </div>
+
     <!-- Messaggio di errore -->
     <div *ngIf="!isFormValid" class="error-message">
-      <p>Campi mancanti</p>
+      <p>⚠️ Compila tutti i campi obbligatori: data, orario, foto e bolla dell'ordine.</p>
     </div>
 
     <!-- Pulsante di invio -->

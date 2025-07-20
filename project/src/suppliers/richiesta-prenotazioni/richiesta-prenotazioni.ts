@@ -17,6 +17,8 @@ export class RichiestaPrenotazioni implements OnInit, OnDestroy {
   notes: string = '';
   selectedFile: File | null = null;
   capturedImage: string | null = null;
+  selectedBolla: File | null = null;
+  bollaImagePreview: string | null = null;
 
   // Stato della fotocamera
   isCameraActive: boolean = false;
@@ -49,7 +51,41 @@ export class RichiestaPrenotazioni implements OnInit, OnDestroy {
     this.notes = event.target.value;
   }
 
-  // Gestione selezione file
+  // Gestione selezione bolla
+  onBollaSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedBolla = file;
+
+      // Se è un'immagine, crea anteprima
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.bollaImagePreview = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        this.bollaImagePreview = null;
+      }
+
+      this.checkFormValidity();
+    }
+  }
+
+  // Rimuovi bolla selezionata
+  removeBolla(): void {
+    this.selectedBolla = null;
+    this.bollaImagePreview = null;
+    this.checkFormValidity();
+  }
+
+  // Ottieni icona per tipo file
+  getFileIcon(fileType: string): string {
+    if (fileType.includes('pdf')) return 'PDF';
+    if (fileType.includes('doc')) return 'DOC';
+    if (fileType.includes('image')) return 'IMG';
+    return 'FILE';
+  }
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file && file.type.startsWith('image/')) {
@@ -132,7 +168,8 @@ export class RichiestaPrenotazioni implements OnInit, OnDestroy {
   checkFormValidity(): void {
     this.isFormValid = this.selectedDate !== '' &&
                      this.selectedTime !== '' &&
-                     (this.selectedFile !== null || this.capturedImage !== null);
+                     (this.selectedFile !== null || this.capturedImage !== null) &&
+                     this.selectedBolla !== null;
   }
 
   // Invia richiesta
@@ -143,7 +180,8 @@ export class RichiestaPrenotazioni implements OnInit, OnDestroy {
         orario: this.selectedTime,
         note: this.notes,
         file: this.selectedFile,
-        fotoScattata: this.capturedImage
+        fotoScattata: this.capturedImage,
+        bolla: this.selectedBolla
       };
 
       console.log('Dati della richiesta:', formData);
@@ -161,13 +199,15 @@ export class RichiestaPrenotazioni implements OnInit, OnDestroy {
     this.notes = '';
     this.selectedFile = null;
     this.capturedImage = null;
+    this.selectedBolla = null;
+    this.bollaImagePreview = null;
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
     }
     this.checkFormValidity();
   }
 
-  // Cleanuup quando il componente viene distrutto
+  // Cleanup quando il componente viene distrutto
   ngOnDestroy(): void {
     this.stopCamera();
   }
